@@ -1,120 +1,105 @@
-# 📈 Quantitative ML Trading Strategy
+# Quantitative ML Trading Strategy
 
-A machine learning-based trading strategy designed to predict short-term price movements using financial time-series data.
+A machine learning-based quantitative trading project that explores short-term trading signals using financial time-series data.
 
-The project focuses on building a realistic end-to-end pipeline, including feature engineering, model training, walk-forward validation, and multi-asset portfolio backtesting.
-
----
-
-## 🚀 Overview
-
-This project simulates a systematic trading strategy by:
-
-- Extracting features from historical market data  
-- Training a machine learning model (XGBoost)  
-- Generating trading signals based on prediction confidence  
-- Applying a trend filter to reduce noise  
-- Backtesting the strategy using realistic assumptions  
-- Extending the approach to a multi-asset portfolio  
+The goal of this project is not to present a production-ready trading system, but to build a realistic research pipeline and understand the challenges of applying machine learning to financial markets.
 
 ---
 
-## 🧠 Key Components
+## Overview
 
-### 📊 Feature Engineering
+This project implements an end-to-end trading research workflow:
+
+- Downloading historical market data
+- Creating technical and statistical features
+- Training machine learning models on time-series data
+- Using walk-forward validation to avoid data leakage
+- Generating long/short trading signals
+- Backtesting a multi-asset portfolio
+- Evaluating performance using cumulative returns and Sharpe ratio
+
+---
+
+## Key Features
+
+### Feature Engineering
+The strategy uses features such as:
+
+- Daily returns
+- Moving averages
 - Momentum
 - Volatility
-- Moving averages (MA10, MA50, MA200)
-- RSI (Relative Strength Index)
-- Returns
+- RSI
+- Trend indicators
+
+### Machine Learning
+The model predicts short-term price direction using historical features.
+
+The output is treated as a confidence score, which is converted into trading signals using ranking-based thresholds.
+
+### Walk-Forward Validation
+The model is trained only on past data and tested on future periods.
+
+This helps reduce lookahead bias and better simulates real-world trading conditions.
+
+### Strategy Logic
+The strategy uses:
+
+- Long positions on high-confidence signals
+- Short positions only on extreme low-confidence signals
+- Trend filtering
+- Transaction cost modeling
+- Multi-asset portfolio construction
 
 ---
 
-### 🤖 Machine Learning Model
-- XGBoost classifier for price direction prediction  
-- Predicts probability of next-day positive return  
+## Results
 
----
+The strategy showed mixed results. It performed better in some market periods but struggled to generalize consistently across changing market regimes.
 
-### 🔁 Walk-Forward Validation
-- Rolling training window (time-aware split)  
-- Prevents data leakage  
-- Simulates real-world trading conditions  
+This was an important part of the project: understanding that building a profitable trading strategy is significantly harder than training a machine learning model.
 
----
-
-### ⚙️ Strategy Logic
-- Long positions when:
-  - Model confidence is high  
-  - Market is in an uptrend  
-
-- Short positions when:
-  - Model confidence is low  
-  - Market is in a downtrend  
-
-- Position sizing based on prediction confidence  
-
----
-
-### 📉 Backtesting
-- Daily returns simulation  
-- Transaction costs included  
-- Performance metrics:
-  - Cumulative return  
-  - Sharpe ratio  
-
----
-
-### 💼 Multi-Asset Portfolio
-- Strategy applied across multiple assets (e.g., AAPL, MSFT, GOOGL, AMZN, META)  
-- Equal-weight portfolio construction  
-- Aggregated performance evaluation  
-
----
-
-## 📊 Example Output
-
-- Strategy vs Market performance plot  
-- Portfolio cumulative return  
-- Sharpe ratio  
-
----
-## 📊 Strategy Performance
+### Strategy Performance
 
 ![Strategy Performance](images/strategy_performance.png)
 
-## 🧠 Key Learnings
+---
 
-- Building a profitable trading strategy is significantly harder than training a model  
-- Avoiding overfitting is critical in financial applications  
-- Signal generation is the main challenge in quantitative trading  
-- Walk-forward validation is essential for realistic evaluation  
+## Key Learnings
+
+Some of the main lessons from this project:
+
+- Financial markets are noisy and hard to predict
+- Model accuracy does not necessarily translate into trading profitability
+- Avoiding data leakage is critical
+- Walk-forward validation is essential for realistic evaluation
+- Signal quality matters more than trade quantity
+- Short signals were harder to model reliably than long signals
 
 ---
 
-## ⚠️ Disclaimer
+## Project Structure
 
-This project is for educational purposes only and does not constitute financial advice.
-
----
-
-## 📂 Project Structure
-
-├── data_loader.py   # Core logic (features, model, strategy, backtest)
-├── main.py          # Entry point
-├── README.md
+```text
+.
+├── main.py
+├── src/
+│   └── data_loader.py
+├── images/
+│   └── strategy_performance.png
 ├── requirements.txt
-
+└── README.md
+```
 ---
-
 ## ▶️ How to Run
 
 ```bash
 pip install -r requirements.txt
 python main.py
+```
 
-👨‍💻 Author
+## 👨‍💻 Author
 
 Yaniv Shaino
-LinkedIn￼
+https://www.linkedin.com/in/yaniv-shaino-768213225/
 
