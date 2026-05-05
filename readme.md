@@ -79,6 +79,9 @@ This project simulates a systematic trading strategy by:
 - Sharpe ratio  
 
 ---
+## 📊 Strategy Performance
+
+![Strategy Performance](images/strategy_performance.png)
 
 ## 🧠 Key Learnings
 

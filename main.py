@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-from data_loader import (
+from src.data_loader import (
     load_data,
     add_features,
     prepare_data,
@@ -66,6 +66,7 @@ def main():
     plt.title("Multi-Asset ML Trading Strategy")
     plt.xlabel("Date")
     plt.ylabel("Cumulative Return")
+    plt.savefig("images/strategy_performance.png", dpi=300, bbox_inches="tight")
     plt.show()
 
 
