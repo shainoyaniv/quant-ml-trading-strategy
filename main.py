@@ -1,3 +1,6 @@
+import warnings
+from urllib3.exceptions import NotOpenSSLWarning
+warnings.filterwarnings("ignore", category=NotOpenSSLWarning)
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -32,18 +35,12 @@ def run_single_asset(ticker):
         long_rank=0.8,
         short_rank=0.005,
         use_trend_filter=True,
-        verbose=True
+        verbose=False
     )
 
     results = backtest(df)
 
-    print("\n=== DEBUG ===")
-    print("Total trades:", (df["position"] != 0).sum())
-    print("Long trades:", (df["position"] > 0).sum())
-    print("Short trades:", (df["position"] < 0).sum())
-    print("Strategy return:", df["cumulative_strategy"].iloc[-1])
-    print("Market return:", df["cumulative_market"].iloc[-1])
-    print(df['confidence'].describe())
+
     return results["strategy_return"].rename(ticker)
 
 
@@ -90,11 +87,12 @@ def main():
     IMAGE_DIR = os.path.join(PROJECT_ROOT, "images")
     os.makedirs(IMAGE_DIR, exist_ok=True)
     save_path = os.path.join(IMAGE_DIR, "strategy_performance.png")
-    print("Saving to:", save_path)
+    print("Chart saved to images/strategy_performance.png")
     plt.savefig(save_path, dpi=300, bbox_inches="tight")
     plt.close()
     plt.show()
 
 
 if __name__ == "__main__":
+    print("Running trading strategy...")
     main()

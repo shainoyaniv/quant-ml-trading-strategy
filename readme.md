@@ -78,6 +78,24 @@ Some of the main lessons from this project:
 
 ---
 
+## Research Notes
+
+This project intentionally focuses on building a realistic research pipeline rather than presenting a guaranteed profitable strategy.
+
+During experimentation, the model showed mixed results and struggled to generalize across different market regimes. This highlighted several important challenges in quantitative trading:
+
+- Financial data is noisy
+
+- Prediction confidence is often concentrated around 0.5
+
+- More trades do not necessarily improve performance
+
+- Short signals were less reliable than long signals
+
+- Walk-forward validation is essential to avoid unrealistic results
+
+---
+
 ## Project Structure
 
 ```text

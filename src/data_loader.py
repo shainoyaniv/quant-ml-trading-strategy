@@ -8,7 +8,7 @@ from xgboost import XGBClassifier
 # DATA LOADING
 # =========================
 def load_data(ticker, start, end):
-    df = yf.download(ticker, start=start, end=end)
+    df = yf.download(ticker, start=start, end=end, progress=False)
     df['return'] = df['Close'].pct_change()
     return df.dropna()
 
@@ -59,8 +59,8 @@ def walk_forward(X, y):
     window = 252  # 1 year
 
     for i in range(window, len(X)):
-        X_train = X.iloc[i-window:i]
-        y_train = y.iloc[i-window:i]
+        X_train = X.iloc[i - window:i]
+        y_train = y.iloc[i - window:i]
 
         model = XGBClassifier(
             n_estimators=30,
@@ -74,7 +74,7 @@ def walk_forward(X, y):
 
         model.fit(X_train, y_train)
 
-        pred = model.predict_proba(X.iloc[i:i+1])[:, 1][0]
+        pred = model.predict_proba(X.iloc[i:i + 1])[:, 1][0]
         preds.append(pred)
 
     return np.array(preds)
@@ -84,12 +84,12 @@ def walk_forward(X, y):
 # STRATEGY (THE MAGIC 🔥)
 # =========================
 def apply_strategy(
-    df,
-    preds,
-    long_rank=0.70,
-    short_rank=0.10,
-    use_trend_filter=True,
-    verbose=False
+        df,
+        preds,
+        long_rank=0.70,
+        short_rank=0.10,
+        use_trend_filter=True,
+        verbose=False
 ):
     """
     Apply a trading strategy based on model prediction confidence.
@@ -187,10 +187,12 @@ def apply_strategy(
     df["trade"] = df["position"].diff().abs()
 
     df["strategy_return"] = (
-        df["position"] * df["return"] - cost * df["trade"]
+            df["position"] * df["return"] - cost * df["trade"]
     )
 
     return df.dropna()
+
+
 def optimize_thresholds(df, preds):
     """
     Find the best long/short confidence thresholds based on Sharpe Ratio.
@@ -211,9 +213,9 @@ def optimize_thresholds(df, preds):
                 continue
 
             sharpe = (
-                temp["strategy_return"].mean() /
-                temp["strategy_return"].std()
-            ) * np.sqrt(252)
+                             temp["strategy_return"].mean() /
+                             temp["strategy_return"].std()
+                     ) * np.sqrt(252)
 
             if sharpe > best_sharpe:
                 best_sharpe = sharpe
@@ -227,6 +229,7 @@ def optimize_thresholds(df, preds):
 
     return best_long, best_short
 
+
 # =========================
 # BACKTEST
 # =========================
@@ -235,9 +238,9 @@ def backtest(df):
     df['cumulative_strategy'] = (1 + df['strategy_return']).cumprod()
 
     sharpe = (
-        df['strategy_return'].mean() /
-        df['strategy_return'].std()
-    ) * np.sqrt(252)
+                     df['strategy_return'].mean() /
+                     df['strategy_return'].std()
+             ) * np.sqrt(252)
 
     print("\n=== RESULTS ===")
     print(f"Market: {df['cumulative_market'].iloc[-1]:.2f}")
